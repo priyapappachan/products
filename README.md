@@ -29,11 +29,14 @@ List of APIs
 
 
     params : 
+    
         filterKey : gender
+        
         filterValue : Men      
         
 4. GET  ec2-35-183-34-116.ca-central-1.compute.amazonaws.com:3000/api/products
 
     params : 
+    
         search : Women
 
