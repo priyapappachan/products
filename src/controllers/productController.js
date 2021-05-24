@@ -70,7 +70,7 @@ exports.getFilters = async (req, res, next) => {
         filters = {};
 
         //call method to get list of filters and their values
-        productService.getFilters(product);
+        productService.getFilters(products);
         res.json({
             'result': filters,
             'status': 'success'
