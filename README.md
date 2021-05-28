@@ -23,20 +23,38 @@ Port : 3000
 
 List of APIs 
 
-1. GET  ec2-35-183-34-116.ca-central-1.compute.amazonaws.com:3000/api/filters
-2. GET  ec2-35-183-34-116.ca-central-1.compute.amazonaws.com:3000/api/products
-3. GET  ec2-35-183-34-116.ca-central-1.compute.amazonaws.com:3000/api/products
 
+1. get all products
+
+   GET  ec2-35-183-34-116.ca-central-1.compute.amazonaws.com:3000/api/products
+   
+2. get products by applying filters - brand, category, gender
+
+   GET  ec2-35-183-34-116.ca-central-1.compute.amazonaws.com:3000/api/products
 
     params : 
     
-        filterKey : gender
+        brand : Roadster
         
-        filterValue : Men      
+        gender : Men
         
-4. GET  ec2-35-183-34-116.ca-central-1.compute.amazonaws.com:3000/api/products
+        category : Jeans
+        
+3. search products by product name
+ 
+    GET  ec2-35-183-34-116.ca-central-1.compute.amazonaws.com:3000/api/products
+
 
     params : 
     
         search : Women
+        
+        
+4. get values of filters - brand, category and gender
+ 
+    GET  ec2-35-183-34-116.ca-central-1.compute.amazonaws.com:3000/api/filters
+
+
+    
+
 
