@@ -5,53 +5,33 @@ const productService = require('../services/productService');
 exports.getProducts = async (req, res, next) => {
 
     try {
-        filterKey = req.query.filterKey;
-        filterValue = req.query.filterValue;
-        console.log('filter key : ' + filterKey);
+
+        brand = req.query.brand;
+        category = req.query.category;
+        gender = req.query.gender;
         search = req.query.search;
 
-        //call external API
-        endpoint = 'https://demo7242716.mockable.io/products';
-        response = await axios.get(endpoint);
-        products = response.data.products;
-
         //if no params present return all products
-        if (!filterKey && !search) {
-            res.json({
-                'result': products,
-                'status': 'success'
-            });
+        if (!brand && !category && !gender && !search) {
+            products = await productService.getProducts();
+        }
+        
+        if (search) {
+            products = await productService.searchProducts(search);
         }
 
-        result = [];
-        products.forEach(product => {
-            
-            //check for filters
-            for (let key in product) {
-                if (filterKey && key === filterKey && product[key] === filterValue) {
-                    result.push(product);
-                }
-            }
-
-            //check for search
-            productName = []
-            searchName = []
-            if (search) {
-                productName = product.productName.toLowerCase().split(" ");
-                searchName = search.toLowerCase().split(" ");
-                const found = productName.some(r=> searchName.includes(r))
-                if (found)
-                    result.push(product);
-            }
-        });
+        if (brand || category || gender) {
+            products = await productService.filterProducts(brand, gender, category);
+        }
 
         res.json({
-            'result': result,
+            'result': products,
             'status': 'success'
         });
+
     } catch (error) {
         console.log(error);
-        res.json({ 'status': 'error' });
+        res.json({ 'status': 'something went wrong' });
     }
 };
 
@@ -59,22 +39,17 @@ exports.getProducts = async (req, res, next) => {
 exports.getFilters = async (req, res, next) => {
 
     try {
-        filterKey = req.query.filterKey;
-        filterValue = req.query.filterValue;
-        search = req.query.search;
-
-        //call external API
-        endpoint = 'https://demo7242716.mockable.io/products';
-        response = await axios.get(endpoint);
-        products = response.data.products;
-        filters = {};
-
-        //call method to get list of filters and their values
-        productService.getFilters(products);
+        
+        const filters = await productService.getFilters();
         res.json({
-            'result': filters,
+            'result': {
+                'brand' : filters[0].brand,
+                'category' : filters[0].category,
+                'gender' : filters[0].gender,
+            },
             'status': 'success'
         });
+        
     } catch (error) {
         console.log(error);
         res.json({ 'status': 'error' });
